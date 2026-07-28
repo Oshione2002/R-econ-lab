@@ -29,6 +29,6 @@ testthat::test_that("key methods generate parseable R", {
   for (id in ids) {
     m <- method_record(reg, id)
     code <- generate_r_code(m, inp)
-    testthat::expect_silent(parse(text = code), info = id)
+    testthat::expect_silent(parse(text = code))
   }
 })
