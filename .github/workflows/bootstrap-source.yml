@@ -27,25 +27,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          sha256sum \
-            .bootstrap/fix-00-00 \
-            .bootstrap/fix-00-01 \
-            .bootstrap/fix-01-00 \
-            .bootstrap/fix-01-01 \
-            .bootstrap/fix-02-00 \
-            .bootstrap/fix-02-01 \
-            .bootstrap/fix-02-02 \
-            .bootstrap/fix-02-03 \
-            .bootstrap/fix-03-00 \
-            .bootstrap/fix-03-01 \
-            .bootstrap/fix-03-02 \
-            .bootstrap/fix-03-03 \
-            .bootstrap/fix-04-00 \
-            .bootstrap/fix-04-01 \
-            .bootstrap/fix-04-02 \
-            .bootstrap/fix-04-03 \
-            .bootstrap/fix-04-04
-
           cat \
             .bootstrap/fix-00-00 \
             .bootstrap/fix-00-01 \
@@ -73,7 +54,8 @@ jobs:
           unzip -o /tmp/r-econ-source.zip -d .
 
           rm -rf .bootstrap
-          rm -f .github/workflows/bootstrap-source.yml
+          rm -f .github/workflows/r-check.yml
+          git checkout HEAD -- README.md
 
       - name: Commit clean application source
         shell: bash
