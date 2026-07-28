@@ -1,0 +1,63 @@
+Package: REconometricsStudio
+Type: Shiny
+Title: R Econometrics Studio
+Version: 0.3.0
+Authors@R: person("Treasure", "Alelume", role = "aut")
+Description: A modular visual workflow for econometric analysis with transparent R code generation.
+License: MIT
+Encoding: UTF-8
+Imports:
+    shiny,
+    bslib,
+    DT,
+    htmltools,
+    jsonlite,
+    readxl,
+    haven,
+    ggplot2,
+    broom,
+    knitr,
+    lmtest,
+    sandwich,
+    car,
+    plm,
+    tseries,
+    urca,
+    vars,
+    forecast,
+    AER,
+    MASS,
+    quantreg,
+    nnet,
+    pscl,
+    survival
+Suggests:
+    ARDL,
+    fixest,
+    did,
+    MatchIt,
+    rdrobust,
+    Synth,
+    rugarch,
+    rmgarch,
+    spdep,
+    spatialreg,
+    Benchmarking,
+    frontier,
+    lavaan,
+    brms,
+    glmnet,
+    mgcv,
+    lme4,
+    sampleSelection,
+    censReg,
+    betareg,
+    ranger,
+    xgboost,
+    grf,
+    boot,
+    psych,
+    ineq,
+    oaxaca,
+    systemfit,
+    cointReg
