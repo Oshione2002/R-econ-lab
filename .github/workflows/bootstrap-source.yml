@@ -31,6 +31,17 @@ jobs:
         run: |
           set -euo pipefail
 
+          sha256sum \
+            .bootstrap/part-00 \
+            .bootstrap/part-01 \
+            .bootstrap/part-02 \
+            .bootstrap/part-03 \
+            .bootstrap/fix-04-00 \
+            .bootstrap/fix-04-01 \
+            .bootstrap/fix-04-02 \
+            .bootstrap/fix-04-03 \
+            .bootstrap/fix-04-04
+
           cat \
             .bootstrap/part-00 \
             .bootstrap/part-01 \
