@@ -1,0 +1,5 @@
+tests
+.github
+.git
+renv/library
+*.zip
