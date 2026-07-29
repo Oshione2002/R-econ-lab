@@ -19,6 +19,6 @@ jobs:
       - name: Install test dependency
         run: Rscript -e "install.packages('testthat', repos='https://cloud.r-project.org')"
       - name: Parse source files
-        run: Rscript -e "files <- c('app.R', list.files('R', full.names=TRUE, pattern='\\\\.R$')); invisible(lapply(files, parse)); cat('Parsed', length(files), 'R files\\n')"
+        run: Rscript -e "files <- c('app.R', list.files('R', full.names=TRUE, pattern='[.]R$')); invisible(lapply(files, parse)); cat('Parsed', length(files), 'R files\n')"
       - name: Run tests
         run: Rscript -e "testthat::test_dir('tests/testthat')"
