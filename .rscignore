@@ -1,5 +1,10 @@
 tests
 .github
 .git
-renv/library
-*.zip
+deploy
+docs
+renv
+START_HERE.bat
+start.sh
+run_app.R
+r-econometrics-studio.Rproj
