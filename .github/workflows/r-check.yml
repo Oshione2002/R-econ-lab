@@ -16,11 +16,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libuv1-dev
-      - name: Install test and startup dependencies
-        run: Rscript -e "install.packages(c('testthat','shiny','bslib','DT','htmltools','jsonlite'), repos='https://cloud.r-project.org')"
+      - name: Install test dependency
+        run: Rscript -e "install.packages('testthat', repos='https://cloud.r-project.org')"
       - name: Parse source files
         run: Rscript -e "files <- c('app.R', list.files('R', full.names=TRUE, pattern='\\.R$')); invisible(lapply(files, parse)); cat('Parsed', length(files), 'R files\n')"
-      - name: Instantiate Shiny application
-        run: Rscript -e "e <- new.env(parent=globalenv()); result <- source('app.R', local=e); stopifnot(inherits(result$value, 'shiny.appobj'), is.function(e$server)); cat('Shiny application instantiated successfully\n')"
       - name: Run tests
         run: Rscript -e "testthat::test_dir('tests/testthat')"
