@@ -1,0 +1,49 @@
+name: Harden Shiny session startup
+
+on:
+  push:
+    branches: [agent/harden-session-startup]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/harden-session-startup
+      - name: Remove unsafe automatic sample load
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('app.R')
+          text = path.read_text(encoding='utf-8')
+          old = '''  # Load a useful sample after the browser session is ready.\n  session$onFlushed(function() {\n    if (is.null(state$data)) set_data(utils::read.csv("data/sample_macro.csv", check.names = FALSE), "sample_macro.csv")\n  }, once = TRUE)'''
+          new = '''  # Keep the initial hosted session lightweight and failure-safe.\n  # Users can load either bundled sample explicitly from Data Studio.\n  session$onFlushed(function() {\n    tryCatch({\n      state$log <- c(state$log, sprintf("%s — Session ready", format(Sys.time(), "%H:%M:%S")))\n    }, error = function(e) {\n      message("Non-fatal session initialisation error: ", conditionMessage(e))\n    })\n  }, once = TRUE)'''
+          if old not in text:
+              raise SystemExit('Expected automatic sample-load block was not found.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+      - name: Add startup regression guard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/generate-manifest.yml')
+          text = path.read_text(encoding='utf-8')
+          old = "Rscript -e 'e <- new.env(parent=globalenv()); source(\"app.R\", local=e); shiny::testServer(e$server, { session$flushReact(); invisible(output$method_meta); invisible(output$method_options); invisible(output$specification_card); invisible(output$run_status) }); cat(\"Initial Shiny session rendered successfully\\n\")'"
+          new = "Rscript -e 'e <- new.env(parent=globalenv()); source(\"app.R\", local=e); shiny::testServer(e$server, { session$flushReact(); invisible(output$method_meta); invisible(output$method_options); invisible(output$specification_card); invisible(output$run_status); invisible(output$deployment_status); stopifnot(is.null(state$data)); session$flushReact() }); cat(\"Initial empty Shiny session rendered successfully\\n\")'"
+          if old not in text:
+              raise SystemExit('Expected connected-session test command was not found.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+      - name: Commit hardening patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.R .github/workflows/generate-manifest.yml
+          git commit -m "Harden hosted Shiny session startup"
+          git push
