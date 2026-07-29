@@ -304,12 +304,12 @@ server <- function(input, output, session) {
     div(class="spec-card",
       div(class="spec-header",div(h3(m$name),p(m$short)),status_badge(m$status)),
       div(class="spec-grid",
-        div(class="spec-item",small("Dependent variable"),strong(input$dependent %||% "Not selected")),
-        div(class="spec-item",small("Regressors"),strong(if(length(input$independents))paste(input$independents,collapse=", ") else "None selected")),
-        div(class="spec-item",small("Package"),strong(m$package)),
-        div(class="spec-item",small("Function"),strong(m$fn)),
-        div(class="spec-item",small("Data"),strong(state$data_name %||% "No dataset")),
-        div(class="spec-item",small("Rows"),strong(if(is.null(state$data))0 else nrow(state$data)))
+        div(class="spec-item",tags$small("Dependent variable"),strong(input$dependent %||% "Not selected")),
+        div(class="spec-item",tags$small("Regressors"),strong(if(length(input$independents))paste(input$independents,collapse=", ") else "None selected")),
+        div(class="spec-item",tags$small("Package"),strong(m$package)),
+        div(class="spec-item",tags$small("Function"),strong(m$fn)),
+        div(class="spec-item",tags$small("Data"),strong(state$data_name %||% "No dataset")),
+        div(class="spec-item",tags$small("Rows"),strong(if(is.null(state$data))0 else nrow(state$data)))
       ),
       hr(), h5("Available diagnostics"), p(m$diagnostics_text)
     )
