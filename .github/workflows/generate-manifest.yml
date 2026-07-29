@@ -62,7 +62,7 @@ jobs:
 
       - name: Exercise connected Shiny session
         run: |
-          Rscript -e 'e <- new.env(parent=globalenv()); source("app.R", local=e); shiny::testServer(e$server, { session$flushReact(); invisible(output$method_meta); invisible(output$method_options); invisible(output$specification_card); invisible(output$run_status) }); cat("Initial Shiny session rendered successfully\n")'
+          Rscript -e 'e <- new.env(parent=globalenv()); source("app.R", local=e); shiny::testServer(e$server, { session$flushReact(); invisible(output$method_meta); invisible(output$method_options); invisible(output$specification_card); invisible(output$run_status); invisible(output$deployment_status); stopifnot(is.null(state$data)); session$flushReact() }); cat("Initial empty Shiny session rendered successfully\n")'
 
       - name: Generate manifest
         run: Rscript deploy/generate_manifest.R
