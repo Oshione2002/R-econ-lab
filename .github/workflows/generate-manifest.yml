@@ -55,7 +55,7 @@ jobs:
 
       - name: Validate manifest
         run: |
-          Rscript -e "x <- jsonlite::read_json('manifest.json'); stopifnot(x$version == 1, file.exists('app.R')); cat('manifest.json is valid\n')"
+          Rscript -e 'x <- jsonlite::read_json("manifest.json"); stopifnot(x$version == 1L, file.exists("app.R"), length(x$packages) > 0L); cat("manifest.json is valid\n")'
 
       - name: Commit manifest
         run: |
