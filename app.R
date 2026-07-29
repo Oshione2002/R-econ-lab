@@ -402,9 +402,14 @@ server <- function(input, output, session) {
 
   observeEvent(input$copy_code, session$sendCustomMessage("copy-code", state$generated_code))
 
-  # Load a useful sample after the browser session is ready.
+  # Keep the initial hosted session lightweight and failure-safe.
+  # Users can load either bundled sample explicitly from Data Studio.
   session$onFlushed(function() {
-    if (is.null(state$data)) set_data(utils::read.csv("data/sample_macro.csv", check.names = FALSE), "sample_macro.csv")
+    tryCatch({
+      state$log <- c(state$log, sprintf("%s — Session ready", format(Sys.time(), "%H:%M:%S")))
+    }, error = function(e) {
+      message("Non-fatal session initialisation error: ", conditionMessage(e))
+    })
   }, once = TRUE)
 }
 
