@@ -60,6 +60,10 @@ jobs:
         run: |
           Rscript -e 'e <- new.env(parent=globalenv()); result <- source("app.R", local=e); stopifnot(inherits(result$value, "shiny.appobj"), is.function(e$server)); cat("Shiny application instantiated successfully\n")'
 
+      - name: Exercise connected Shiny session
+        run: |
+          Rscript -e 'e <- new.env(parent=globalenv()); source("app.R", local=e); shiny::testServer(e$server, { session$flushReact(); invisible(output$method_meta); invisible(output$method_options); invisible(output$specification_card); invisible(output$run_status) }); cat("Initial Shiny session rendered successfully\n")'
+
       - name: Generate manifest
         run: Rscript deploy/generate_manifest.R
 
