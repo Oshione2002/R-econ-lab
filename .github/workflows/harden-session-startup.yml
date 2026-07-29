@@ -3,6 +3,9 @@ name: Harden Shiny session startup
 on:
   push:
     branches: [agent/harden-session-startup]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
 
 permissions:
   contents: write
