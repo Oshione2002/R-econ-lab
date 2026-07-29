@@ -42,14 +42,20 @@ jobs:
       - name: Install application and deployment dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rsconnect
+          dependencies: '"hard"'
+          extra-packages: |
+            any::rsconnect
+            any::cpp11
+            any::progress
+            any::RcppArmadillo
+            any::RcppEigen
 
       - name: Generate manifest
         run: Rscript deploy/generate_manifest.R
 
       - name: Validate manifest
         run: |
-          Rscript -e "x <- jsonlite::read_json('manifest.json'); stopifnot(x$version == 1, file.exists('app.R')); cat('manifest.json is valid\n')"
+          Rscript -e 'x <- jsonlite::read_json("manifest.json"); stopifnot(x$version == 1L, file.exists("app.R"), length(x$packages) > 0L); cat("manifest.json is valid\n")'
 
       - name: Commit manifest
         run: |

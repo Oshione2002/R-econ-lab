@@ -31,7 +31,7 @@ Imports:
     nnet,
     pscl,
     survival
-Suggests:
+Config/Needs/full:
     ARDL,
     fixest,
     did,
