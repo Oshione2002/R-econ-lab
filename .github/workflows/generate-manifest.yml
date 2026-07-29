@@ -42,7 +42,12 @@ jobs:
       - name: Install application and deployment dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rsconnect
+          extra-packages: |
+            any::rsconnect
+            any::cpp11
+            any::progress
+            any::RcppArmadillo
+            any::RcppEigen
 
       - name: Generate manifest
         run: Rscript deploy/generate_manifest.R
