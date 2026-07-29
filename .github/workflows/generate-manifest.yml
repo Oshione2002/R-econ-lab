@@ -56,6 +56,10 @@ jobs:
             any::RcppArmadillo
             any::RcppEigen
 
+      - name: Instantiate Shiny application
+        run: |
+          Rscript -e 'e <- new.env(parent=globalenv()); result <- source("app.R", local=e); stopifnot(inherits(result$value, "shiny.appobj"), is.function(e$server)); cat("Shiny application instantiated successfully\n")'
+
       - name: Generate manifest
         run: Rscript deploy/generate_manifest.R
 
