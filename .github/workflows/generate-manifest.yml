@@ -10,6 +10,15 @@ on:
       - "R/**"
       - "deploy/generate_manifest.R"
       - ".github/workflows/generate-manifest.yml"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "DESCRIPTION"
+      - "app.R"
+      - "R/**"
+      - "deploy/generate_manifest.R"
+      - ".github/workflows/generate-manifest.yml"
+      - ".connect-cloud-trigger"
 
 permissions:
   contents: write
@@ -20,8 +29,10 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Check out repository
+      - name: Check out source branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
       - name: Set up supported R
         uses: r-lib/actions/setup-r@v2
@@ -42,9 +53,10 @@ jobs:
 
       - name: Commit manifest
         run: |
+          rm -f .connect-cloud-trigger
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add manifest.json
+          git add -A manifest.json .connect-cloud-trigger
           if git diff --cached --quiet; then
             echo "manifest.json is already current."
             exit 0
