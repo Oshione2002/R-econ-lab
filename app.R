@@ -34,7 +34,7 @@ status_badge <- function(status) {
 }
 
 ui <- page_navbar(
-  title = div(class="brand-wrap", span(class="brand-mark", "R"), div(strong("Econometrics Studio"), small("Complete analysis workflow"))),
+  title = div(class="brand-wrap", span(class="brand-mark", "R"), div(strong("Econometrics Studio"), tags$small("Complete analysis workflow"))),
   theme = app_theme,
   window_title = "R Econometrics Studio",
   id = "main_nav",
