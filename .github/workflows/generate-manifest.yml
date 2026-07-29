@@ -8,6 +8,9 @@ on:
       - "DESCRIPTION"
       - "app.R"
       - "R/**"
+      - "data/**"
+      - "www/**"
+      - ".rscignore"
       - "deploy/generate_manifest.R"
       - ".github/workflows/generate-manifest.yml"
   pull_request:
@@ -16,6 +19,9 @@ on:
       - "DESCRIPTION"
       - "app.R"
       - "R/**"
+      - "data/**"
+      - "www/**"
+      - ".rscignore"
       - "deploy/generate_manifest.R"
       - ".github/workflows/generate-manifest.yml"
       - ".connect-cloud-trigger"
@@ -55,7 +61,7 @@ jobs:
 
       - name: Validate manifest
         run: |
-          Rscript -e 'x <- jsonlite::read_json("manifest.json"); stopifnot(x$version == 1L, file.exists("app.R"), length(x$packages) > 0L); cat("manifest.json is valid\n")'
+          Rscript -e 'x <- jsonlite::read_json("manifest.json"); stopifnot(x$version == 1L, x$metadata$appmode == "shiny", file.exists("app.R"), length(x$packages) > 0L, !"rsconnect" %in% names(x$packages)); cat("manifest.json is valid and excludes rsconnect\n")'
 
       - name: Commit manifest
         run: |
